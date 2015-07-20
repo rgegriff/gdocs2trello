@@ -1,7 +1,7 @@
 from collections import namedtuple
-from secrets import client
 from trello import ResourceUnavailable
-Person = namedtuple("Person", ["spreadsheet_name", "full_name", "trello_username"], verbose=False)
+from secrets import trello_client
+from models import Person
 
 admins = [
     Person("George", "George Griffin", "georgegriffin"),
@@ -12,6 +12,7 @@ members = [
     Person("Anup", "Anup Dhabarde", "anupdhabarde1"),
     Person("Enrica", "Enrica Beccalli", "enrica17"),
     Person("Evan", "Evan Bederman", "evanbederman"),
+    Person("George", "George Griffin", "georgegriffin"),
     Person("Harris", "Harris Pittinsky", "harrispittinsky1"),
     Person("Hemant", "Hemant Kumar", "hemant90"),
     Person("Himanshu", "Himanshu Chaubey", "himanshuchaubey"),
@@ -26,13 +27,14 @@ members = [
     Person("Vivek", "Vivek Joshi", "vivek_verificient")
     ]
 
+
 # Simple tests for now just to keep moving
 # @todo: move this into a proper test setup
 def validate_usernames():
     error_count = 0
     for member in members:
         try:
-            client.get_member(member.trello_username)
+            trello_client.get_member(member.trello_username)
         except ResourceUnavailable:
             print member.full_name, "has a bad username: ", member.username
             error_count += 1
